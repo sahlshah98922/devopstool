@@ -22,8 +22,17 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Restore Dependencies
+        run: mvn dependency:resolve
+
       - name: Build with Maven
         run: mvn clean package
 
-      - name: Run Application
-        run: java -jar target/*.jar
+      - name: List Target Directory
+        run: ls -l target/
+
+      - name: Find and Run JAR
+        run: |
+          JAR_FILE=$(ls target/*.jar | head -n 1)
+          echo "Running $JAR_FILE"
+          java -jar $JAR_FILE
